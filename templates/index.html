@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento do Sistema</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&display=swap');
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        h1{
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .monitoramento{
+            display: flex;
+            justify-content:space-around;
+            align-items: center;
+            margin: 3rem;
+        }
+        .caixa {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dado{
+            font-size: 50px;
+            font-family: "Oswald", sans-serif;
+            margin-bottom: 1rem;
+            width: 120px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            color: white;
+            background-color: #264653;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monitoramento em Tempo Real</h1>
+    <div class="monitoramento">
+        <div class="caixa">
+            <p class="dado"><span id="cpu">0</span>%</p>
+            <p>CPU</p>
+        </div>
+
+        <div class="caixa">
+            <p class="dado"><span id="memory">0</span>%</p>
+            <p>MEMÓRIA: <span id="memoria_total">0</span> GB</p>
+        </div>
+
+        <div class="caixa">
+            <p class="dado"><span id="disk">0</span>%</p>
+            <p>DISCO: <span id="disco_total">0</span> GB</p>
+        </div>
+
+        <div class="caixa">
+            <p class="dado"><span id="batery">0</span>%</p>
+            <p>BATERIA</p>
+        </div>
+    </div>
+    <script>
+        function updateStatus() {
+            fetch('/monitor')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cpu').textContent = data.cpu;
+                    document.getElementById('memory').textContent = data.memory;
+                    document.getElementById('memoria_total').textContent = data.memoria_total;
+                    document.getElementById('disk').textContent = data.disk;
+                    document.getElementById('disco_total').textContent = data.disco_total;
+                    document.getElementById('batery').textContent = data.bateria;
+                });
+        }
+
+        setInterval(updateStatus, 1000); // Atualiza a cada 1 segundo
+    </script>
+</body>
+</html>
